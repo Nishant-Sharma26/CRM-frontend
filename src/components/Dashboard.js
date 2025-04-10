@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react"; // Add useEffect
 import { useSelector, useDispatch } from "react-redux";
-import { updateStatus, deleteCandidate } from "../redux/actions"; // Import deleteCandidate
+import { fetchCandidates, updateStatus, deleteCandidate } from "../redux/actions";
 import { toast } from "react-toastify";
 import {
   Table,
@@ -13,6 +13,7 @@ import {
   MenuItem,
   Button,
   IconButton,
+  CircularProgress,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 
@@ -20,6 +21,23 @@ const Dashboard = () => {
   const candidates = useSelector((state) => state.candidates);
   const dispatch = useDispatch();
   const [filters, setFilters] = useState({ jobTitle: "", status: "" });
+  const [loading, setLoading] = useState(true); 
+  const [error, setError] = useState(null); 
+
+  useEffect(() => {
+
+    if (!candidates.length) {
+      setLoading(true);
+      dispatch(fetchCandidates())
+        .then(() => setLoading(false))
+        .catch((err) => {
+          setError("Failed to load candidates");
+          setLoading(false);
+        });
+    } else {
+      setLoading(false);
+    }
+  }, [dispatch, candidates.length]);
 
   const handleStatusChange = (id, status) => {
     dispatch(updateStatus(id, status));
@@ -46,6 +64,9 @@ const Dashboard = () => {
     (!filters.jobTitle || c.jobTitle.toLowerCase().includes(filters.jobTitle.toLowerCase())) &&
     (!filters.status || c.status === filters.status)
   );
+
+  if (loading) return <CircularProgress />;
+  if (error) return <div>{error}</div>;
 
   return (
     <div className="mb-8">

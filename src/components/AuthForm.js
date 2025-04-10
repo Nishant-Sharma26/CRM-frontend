@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux"; // Add Redux dispatch
+import { fetchCandidates } from "../redux/actions"; // Import fetchCandidates
 import { API_URL } from "../utils/constant";
 import {
   Card,
@@ -20,6 +22,7 @@ const AuthForm = ({ setToken }) => {
   const [loading, setLoading] = useState(false);
   const { register, handleSubmit, formState: { errors }, reset } = useForm();
   const navigate = useNavigate();
+  const dispatch = useDispatch(); 
 
   const onSubmit = async (data) => {
     setLoading(true);
@@ -27,10 +30,11 @@ const AuthForm = ({ setToken }) => {
       const url = isSignup ? `${API_URL}/auth/signup` : `${API_URL}/auth/login`;
       const res = await axios.post(url, data);
       const token = res.data.token;
-      localStorage.setItem("token", token); // Set token first
-      setToken(token); // Then update parent state
+      localStorage.setItem("token", token);
+      setToken(token);
+      await dispatch(fetchCandidates()); 
       reset();
-      navigate("/dashboard", { replace: true }); // Replace history to avoid back navigation
+      navigate("/dashboard", { replace: true });
     } catch (err) {
       alert(err.response?.data?.message || `${isSignup ? "Signup" : "Login"} failed`);
     } finally {
@@ -38,7 +42,7 @@ const AuthForm = ({ setToken }) => {
     }
   };
 
-  // Same return JSX as before
+ 
   return (
     <Box sx={{ display: "flex", justifyContent: "center", minHeight: "100vh" }}>
       <Card sx={{ maxWidth: 400, maxHeight: 400, margin: 8, padding: 2, boxShadow: 5, backgroundColor: "#F6f2f2" }}>

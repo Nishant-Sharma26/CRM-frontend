@@ -1,7 +1,17 @@
+
 import axios from "axios";
 import { API_URL } from "../utils/constant";
 
-axios.defaults.headers.common["Authorization"] = `Bearer ${localStorage.getItem("token")}`;
+
+axios.interceptors.request.use((config) => {
+  const token = localStorage.getItem("token");
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  } else {
+    delete config.headers.Authorization; 
+  }
+  return config;
+}, (error) => Promise.reject(error));
 
 export const fetchCandidates = () => async (dispatch) => {
   try {
@@ -9,13 +19,14 @@ export const fetchCandidates = () => async (dispatch) => {
     dispatch({ type: "FETCH_CANDIDATES", payload: res.data });
   } catch (err) {
     console.error("Fetch candidates error:", err);
+    throw err; 
   }
 };
 
 export const addCandidate = (candidateData) => async (dispatch) => {
   try {
     const res = await axios.post(`${API_URL}/candidates`, candidateData);
-    dispatch(fetchCandidates()); // Refresh list after adding
+    dispatch(fetchCandidates()); 
     return res.data;
   } catch (err) {
     console.error("Add candidate error:", err);
@@ -29,13 +40,14 @@ export const updateStatus = (id, status) => async (dispatch) => {
     dispatch({ type: "UPDATE_STATUS", payload: { id, status } });
   } catch (err) {
     console.error("Update status error:", err);
+    throw err;
   }
 };
 
 export const deleteCandidate = (id) => async (dispatch) => {
   try {
     await axios.delete(`${API_URL}/candidates/${id}`);
-    dispatch(fetchCandidates()); // Refresh list after deletion
+    dispatch(fetchCandidates()); 
   } catch (err) {
     console.error("Delete candidate error:", err);
     throw err;
