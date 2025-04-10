@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux"; // Add Redux dispatch
-import { fetchCandidates } from "../redux/actions"; // Import fetchCandidates
+import { useDispatch } from "react-redux"; 
+import { fetchCandidates } from "../redux/actions"; 
 import { API_URL } from "../utils/constant";
 import {
   Card,

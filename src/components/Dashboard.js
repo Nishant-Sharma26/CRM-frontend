@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"; // Add useEffect
+import React, { useEffect, useState } from "react"; 
 import { useSelector, useDispatch } from "react-redux";
 import { fetchCandidates, updateStatus, deleteCandidate } from "../redux/actions";
 import { toast } from "react-toastify";
