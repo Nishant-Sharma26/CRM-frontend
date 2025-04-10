@@ -1,103 +1,59 @@
-Hosted on https://crm-frontend-umber-rho.vercel.app/
+CRM Frontend - Hey, Check This Out!
+Hey there! This is the frontend for my CRM project—a slick little React app that ties into my backend to manage candidates. I’ve packed it with some neat features using Redux for state, Material-UI for the fancy components, and Tailwind CSS to make it look good. It talks to my backend at https://crm-backend-woad.vercel.app (or locally if I’m testing). Here’s the rundown on what it does and how to get it going!
 
-
-
-CRM Frontend
-This is the frontend application for a Customer Relationship Management (CRM) system built with React, Redux, Material-UI, and Tailwind CSS. It interacts with a backend API hosted at https://crm-backend-woad.vercel.app to manage candidate data, including authentication, candidate listing, status updates, and metrics visualization.
-
-Features Implemented -
-Authentication:
-Signup/Login Form: Users can sign up or log in using email and password via a responsive form (AuthForm.js).
-Loading Indicator: Displays a spinner during API calls for signup/login.
-Token Management: Stores JWT in localStorage and propagates it to the app state.
+What’s Inside (Features)
+Login/Signup Vibes:
+Got a form (AuthForm.js) where you can sign up or log in with an email and password. It’s got a cool loading spinner while it talks to the backend, and once you’re in, it saves a token and whisks you to the dashboard.
 Candidate Dashboard (Dashboard.js):
-Candidate List: Displays a table of candidates with name, email, phone, job title, status, resume link, and delete action.
-Filters: Filter candidates by job title (text search) and status (dropdown).
-Status Updates: Change candidate status (Pending, Reviewed, Hired) via dropdown, with real-time Redux updates.
-Delete Functionality: Remove candidates with confirmation prompt and toast notifications.
-Metrics Dashboard (Metrics.js):
-Candidate Stats: Shows total, pending, reviewed, and hired candidate counts in a grid layout with color-coded cards.
+Shows a table of all the candidates—name, email, phone, job title, status, and a link to their resume if they’ve got one.
+You can filter by job title (type to search) or status (pick from a dropdown: Pending, Reviewed, Hired).
+Change a candidate’s status with a dropdown, and it updates right away thanks to Redux.
+Delete button with a confirmation pop-up—trashes a candidate and pops a toast to let you know it worked (or didn’t).
+Metrics Section (Metrics.js):
+A quick grid showing how many candidates total, plus counts for Pending, Reviewed, and Hired. Each one’s got its own color-coded card—looks pretty snazzy!
 State Management:
-Redux: Manages candidate data with actions (fetchCandidates, updateStatus, deleteCandidate) and a reducer.
-UI/UX:
-Material-UI: Used for forms, tables, buttons, and icons.
-Tailwind CSS: Custom styling for layout and responsiveness.
-Toast Notifications: Success/error messages for delete actions using react-toastify.
-Routing:
-React Router: Navigates between / (auth) and /dashboard after successful login/signup.
-Steps to Run the Project Locally
-Prerequisites
-Node.js: Version 14.x or higher.
-npm: Comes with Node.js.
-Backend: Ensure the backend (https://crm-backend-woad.vercel.app) is running or set up locally (see backend README).
-Installation
-Clone the Repository:
-bash
+Redux keeps everything in check—fetches candidates, updates statuses, and handles deletes. It’s all wired up with actions and a reducer.
+Look & Feel:
+Material-UI handles the forms, tables, buttons, and icons—keeps it clean and pro.
+Tailwind CSS for extra styling flair—makes the layout pop and responsive.
+Toast notifications (via react-toastify) for when you delete stuff—success or error, it’ll tell ya.
+Navigation:
+React Router takes you from the login/signup page (/) to the dashboard (/dashboard) after you’re authenticated. No manual refresh needed!
 
-Collapse
 
-Wrap
+How to Run It Locally
+Here’s how to get this thing spinning on your machine:
 
-Copy
+What You’ll Need
+Node.js: Grab 14 or higher—older versions might trip up.
+npm: Comes with Node, so you’re good.
+Backend: Make sure the backend’s up (check its README—I’ve got it at https://crm-backend-woad.vercel.app or http://localhost:5000 locally).
+Steps
+Grab the Code:
+Clone it from GitHub:
+
 git clone https://github.com/Nishant-Sharma26/CRM-frontend.git
 cd CRM-frontend
-Install Dependencies:
-bash
 
-Collapse
 
-Wrap
-
-Copy
 npm install
-Installs React, Redux, Material-UI, Tailwind CSS, Axios, React Router, and other dependencies listed in package.json.
-Configure Environment:
-Create a .env file in the root directory:
-text
 
-Collapse
-
-Wrap
-
-Copy
-REACT_APP_API_URL=https://crm-backend-woad.vercel.app
-For local testing, replace with http://localhost:5000 if running the backend locally.
-Run the Application:
-bash
-
-Collapse
-
-Wrap
-
-Copy
 npm start
-Starts the development server at http://localhost:3000.
-The app should open in your default browser.
-Test Features:
-Navigate to / to sign up or log in.
-After authentication, you’ll be redirected to /dashboard to view candidates and metrics.
-Build for Production
-bash
 
-Collapse
 
-Wrap
-
-Copy
-npm run build
-Creates an optimized build in the build/ folder for deployment (e.g., on Vercel).
-Assumptions and Limitations
+Assumptions & Stuff to Watch Out For
 Assumptions
-Backend Availability: Assumes the backend API at https://crm-backend-woad.vercel.app (or http://localhost:5000 locally) supports:
-/api/auth/signup and /api/auth/login for authentication (POST).
-/api/candidates for fetching (GET), adding (POST), updating status (PUT), and deleting (DELETE) candidates.
-Returns JWT tokens and candidate data in expected formats (e.g., { token }, { _id, name, email, phone, jobTitle, status, resumeUrl }).
-CORS: Backend is configured to allow CORS requests from http://localhost:3000 and https://crm-frontend-umber-rho.vercel.app.
-React Setup: Assumes a standard Create React App structure with Tailwind CSS integrated manually.
+Backend: I’m counting on the backend being live at https://crm-backend-woad.vercel.app (or local at http://localhost:5000) with endpoints for auth and candidates. It’s gotta send back tokens and data like { _id, name, email, phone, jobTitle, status, resumeUrl }.
+CORS: The backend’s cool with requests from http://localhost:3000 and https://crm-frontend-umber-rho.vercel.app—I’ve set that up on the server side.
+React Setup: Built this with Create React App and added Tailwind manually—pretty standard stuff.
+
 Limitations
-Initial Data Fetch: If the backend rejects the first /api/candidates request (e.g., due to CORS or token issues), a refresh might still be needed unless backend CORS is fully resolved.
-Error Handling: Basic error alerts/toasts are implemented; more robust UI feedback (e.g., retry buttons) could be added.
-No Offline Support: Relies on backend connectivity; no local caching or offline mode.
-Single User: Assumes a single-user context; multi-user roles (e.g., admin vs. viewer) aren’t implemented.
-Styling: Tailwind CSS and Material-UI are mixed, which might lead to inconsistent design if not carefully managed.
-Testing: No unit/integration tests are included—manual testing is required.
+
+
+First Load: If the backend’s CORS isn’t spot-on, you might hit a 401 error on the first fetch—fixed it with the backend tweaks, but double-check that.
+by the way i have solved this bug.
+Errors: I’ve got basic alerts and toasts for screw-ups, but it’s not super fancy—could use a retry option or something.
+No Offline Mode: This thing needs the backend to work—no local storage or offline tricks yet.
+Single User: It’s set up for one user at a time—haven’t messed with roles like admin vs. regular user.
+Styling Mix: Using both Material-UI and Tailwind—looks good, but I gotta keep an eye on consistency.
+Testing: Haven’t thrown in any tests yet, so you’ll need to poke it manually to make sure it’s solid.
