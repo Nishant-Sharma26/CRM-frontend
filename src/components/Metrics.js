@@ -7,7 +7,6 @@ const Metrics = () => {
   const pending = candidates.filter(c => c.status === "Pending").length;
   const reviewed = candidates.filter(c => c.status === "Reviewed").length;
   const hired = candidates.filter(c => c.status === "Hired").length;
-
   return (
     <div>
       <h2 className="text-2xl mb-4">Metrics</h2>
