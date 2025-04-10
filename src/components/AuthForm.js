@@ -24,12 +24,14 @@ const AuthForm = ({ setToken }) => {
 
   const onSubmit = async (data) => {
     try {
+      setLoading(true);
       const url = isSignup
         ? `${API_URL}/auth/signup`
         : `${API_URL}/auth/login`;
       const res = await axios.post(url, data);
       setToken(res.data.token);
       localStorage.setItem("token", res.data.token);
+      setLoading(false);
       reset(); 
     } catch (err) {
       alert(err.response?.data?.message || `${isSignup ? "Signup" : "Login"} failed`);
